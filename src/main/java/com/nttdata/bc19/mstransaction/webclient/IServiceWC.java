@@ -10,4 +10,11 @@ public interface IServiceWC {
     Mono<ActProCreCarPerCli> findActProCreCarPerCliById(String id);
     Mono<ActProCreBusCli> findActProCreBusCliById(String id);
     Mono<ActProCreCarBusCli> findActProCreCarBusCliById(String id);
+
+    Mono<PasProPerCli> updatePasProPerCli(PasProPerCli pasProPerCli);
+    Mono<PasProBusCli> updatePasProBusCli(PasProBusCli pasProBusCli);
+    Mono<ActProCrePerCli> updateActProCrePerCli(ActProCrePerCli actProCrePerCli);
+    Mono<ActProCreBusCli> updateActProCreBusCli(ActProCreBusCli actProCreBusCli);
+    Mono<ActProCreCarPerCli> updateActProCreCarPerCli(ActProCrePerCli actProCrePerCli);
+    Mono<ActProCreCarBusCli> updateActProCreCarBusCli(ActProCreCarBusCli actProCreCarBusCli);
 }

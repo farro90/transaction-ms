@@ -7,6 +7,6 @@ import java.math.BigDecimal;
 @Data
 public class TransactionActProCreCarBusCliRequest {
     private String idActProCreCarBusCli;
-    private BigDecimal amount;
+    private double amount;
     private String transactionTypeActPro;
 }

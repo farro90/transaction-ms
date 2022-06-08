@@ -15,5 +15,5 @@ public class TransactionPasProBusCli extends BaseModel{
     private PasProBusCli pasProBusCli;
     private LocalDateTime transactionDate;
     private String transactionTypePasPro;
-    private BigDecimal amount;
+    private double amount;
 }

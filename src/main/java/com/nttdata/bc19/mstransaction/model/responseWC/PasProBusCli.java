@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Document
 public class PasProBusCli extends BaseModel{
     //private String code;
-    private BigDecimal amount;
+    private double amount;
     private String accountNumber;
     private LocalDateTime openingDate;
     private String idBusinessClient;

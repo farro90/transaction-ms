@@ -14,4 +14,5 @@ public class TransactionPasProPerCli extends BaseModel{
     private PasProPerCli pasProPerCli;
     private LocalDateTime transactionDate;
     private String transactionTypePasPro;
+    private double amount;
 }

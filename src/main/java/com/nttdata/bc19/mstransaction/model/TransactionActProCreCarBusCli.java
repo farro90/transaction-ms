@@ -15,5 +15,5 @@ public class TransactionActProCreCarBusCli extends BaseModel{
     private String idActProCreCarBusCli;
     private ActProCreCarBusCli actProCreCarBusCli;
     private String transactionTypeActPro;
-    private BigDecimal amount;
+    private double amount;
 }

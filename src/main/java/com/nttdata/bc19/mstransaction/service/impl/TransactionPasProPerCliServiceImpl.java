@@ -4,6 +4,7 @@ import com.nttdata.bc19.mstransaction.model.TransactionPasProPerCli;
 import com.nttdata.bc19.mstransaction.repository.ITransactionPasProPerCliRepository;
 import com.nttdata.bc19.mstransaction.request.TransactionPasProPerCliRequest;
 import com.nttdata.bc19.mstransaction.service.ITransactionPasProPerCliService;
+import com.nttdata.bc19.mstransaction.util.TransactionTypePasPro;
 import com.nttdata.bc19.mstransaction.webclient.impl.ServiceWCImpl;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,20 @@ public class TransactionPasProPerCliServiceImpl implements ITransactionPasProPer
                     transactionPasProPerCli.setCreatedAt(LocalDateTime.now());
                     transactionPasProPerCli.setPasProPerCli(PasProPerCliResponse);
 
-                    return transactionPasProPerCliRepository.save(transactionPasProPerCli);
+                    if(transactionPasProPerCliRequest.getTransactionTypePasPro().equals(TransactionTypePasPro.RETIRO.name())){
+                        if(PasProPerCliResponse.getAmount() >= transactionPasProPerCliRequest.getAmount()){
+                            PasProPerCliResponse.setAmount(PasProPerCliResponse.getAmount() - transactionPasProPerCliRequest.getAmount());
+                            clientServiceWC.updatePasProPerCli(PasProPerCliResponse);
+                            return transactionPasProPerCliRepository.save(transactionPasProPerCli);
+                        }
+                    }
+                    else if(transactionPasProPerCliRequest.getTransactionTypePasPro().equals(TransactionTypePasPro.DEPOSITO.name())){
+                        PasProPerCliResponse.setAmount(PasProPerCliResponse.getAmount() + transactionPasProPerCliRequest.getAmount());
+                        clientServiceWC.updatePasProPerCli(PasProPerCliResponse);
+                        return transactionPasProPerCliRepository.save(transactionPasProPerCli);
+                    }
+
+                    return null;
                 });
     }
 

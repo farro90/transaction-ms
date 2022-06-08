@@ -1,11 +1,8 @@
 package com.nttdata.bc19.mstransaction.service.impl;
 
 import com.nttdata.bc19.mstransaction.model.TransactionActProCrePerCli;
-import com.nttdata.bc19.mstransaction.model.TransactionActProCrePerCli;
-import com.nttdata.bc19.mstransaction.model.TransactionPasProPerCli;
 import com.nttdata.bc19.mstransaction.repository.ITransactionActProCrePerCliRepository;
 import com.nttdata.bc19.mstransaction.request.TransactionActProCrePerCliRequest;
-import com.nttdata.bc19.mstransaction.request.TransactionPasProPerCliRequest;
 import com.nttdata.bc19.mstransaction.service.ITransactionActProCrePerCliService;
 import com.nttdata.bc19.mstransaction.webclient.impl.ServiceWCImpl;
 import org.bson.types.ObjectId;
