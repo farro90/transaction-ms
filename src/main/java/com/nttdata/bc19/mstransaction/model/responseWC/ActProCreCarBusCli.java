@@ -1,0 +1,25 @@
+package com.nttdata.bc19.mstransaction.model.responseWC;
+
+import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Data
+@Document
+public class ActProCreCarBusCli extends BaseModel{
+    private String creditCardNumber;
+    private BigDecimal creditLine;
+    private BigDecimal amountConsumed;
+    private BigDecimal minimumPayment;
+    private int AnnualCommission;
+    private int cutoffDate;
+    private int payLimitDate;
+    private LocalDateTime openingDate;
+    private LocalDateTime deliveryDate;
+    private String idBusinessClient;
+    private String idActiveProduct;
+    private BusinessClient businessClient;
+    private ActiveProduct activeProduct;
+}

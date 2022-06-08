@@ -1,0 +1,7 @@
+package com.nttdata.bc19.mstransaction.request;
+
+import lombok.Data;
+
+@Data
+public class TransactionPasiveProductPersonClientRequest {
+}
