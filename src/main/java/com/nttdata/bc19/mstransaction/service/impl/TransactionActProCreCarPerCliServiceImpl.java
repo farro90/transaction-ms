@@ -81,4 +81,9 @@ public class TransactionActProCreCarPerCliServiceImpl implements ITransactionAct
     public Flux<TransactionActProCreCarPerCli> findAll() {
         return transactionActProCreCarPerCliRepository.findAll();
     }
+
+    @Override
+    public Flux<TransactionActProCreCarPerCli> findByIdActProCreCarPerCli(String idActProCreCarPerCli) {
+        return null;
+    }
 }

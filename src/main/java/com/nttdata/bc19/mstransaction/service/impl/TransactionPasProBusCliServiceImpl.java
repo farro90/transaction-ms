@@ -85,4 +85,9 @@ public class TransactionPasProBusCliServiceImpl implements ITransactionPasProBus
     public Flux<TransactionPasProBusCli> findAll() {
         return transactionPasProBusCliRepository.findAll();
     }
+
+    @Override
+    public Flux<TransactionPasProBusCli> findByIdPasProBusCli(String idPasProBusCli) {
+        return null;
+    }
 }

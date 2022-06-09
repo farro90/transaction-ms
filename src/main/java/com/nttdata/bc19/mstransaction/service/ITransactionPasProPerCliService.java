@@ -12,4 +12,6 @@ public interface ITransactionPasProPerCliService {
     Mono<Void>deleteById(String id);
     Mono<TransactionPasProPerCli> findById(String id);
     Flux<TransactionPasProPerCli> findAll();
+
+    Flux<TransactionPasProPerCli> findByIdPasProPerCli(String idPasProPerCli);
 }

@@ -86,4 +86,9 @@ public class TransactionPasProPerCliServiceImpl implements ITransactionPasProPer
     public Flux<TransactionPasProPerCli> findAll() {
         return transactionPasProPerCliRepository.findAll();
     }
+
+    @Override
+    public Flux<TransactionPasProPerCli> findByIdPasProPerCli(String idPasProPerCli) {
+        return transactionPasProPerCliRepository.findByIdPasProPerCli(idPasProPerCli);
+    }
 }

@@ -33,6 +33,11 @@ public class TrasactionPasProPerCliApi {
     @GetMapping("/{id}")
     public Mono<TransactionPasProPerCli> findById(@PathVariable String id){ return transactionPasProPerCliService.findById(id); }
 
+    @GetMapping("/find/{idPasProPerCli}")
+    public Flux<TransactionPasProPerCli> findByIdPasProPerCli(@PathVariable String idPasProPerCli){
+        return transactionPasProPerCliService.findByIdPasProPerCli(idPasProPerCli);
+    }
+
     @DeleteMapping("/{id}")
     public Mono<Void> delete(@PathVariable String id){
         return transactionPasProPerCliService.deleteById(id);

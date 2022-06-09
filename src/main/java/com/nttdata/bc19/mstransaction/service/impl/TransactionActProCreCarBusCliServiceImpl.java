@@ -80,4 +80,9 @@ public class TransactionActProCreCarBusCliServiceImpl implements ITransactionAct
     public Flux<TransactionActProCreCarBusCli> findAll() {
         return transactionActProCreCarBusCliRepository.findAll();
     }
+
+    @Override
+    public Flux<TransactionActProCreCarBusCli> findByIdActProCreCarBusCli(String idActProCreCarBusCli) {
+        return null;
+    }
 }

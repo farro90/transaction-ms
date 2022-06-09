@@ -71,4 +71,9 @@ public class TransactionActProCreBusCliServiceImpl implements ITransactionActPro
     public Flux<TransactionActProCreBusCli> findAll() {
         return transactionActProCreBusCliRepository.findAll();
     }
+
+    @Override
+    public Flux<TransactionActProCreBusCli> findByIdActProCreBusCli(String idAActProCreBusCli) {
+        return null;
+    }
 }

@@ -1,6 +1,7 @@
 package com.nttdata.bc19.mstransaction.api;
 
 import com.nttdata.bc19.mstransaction.model.TransactionActProCreCarBusCli;
+import com.nttdata.bc19.mstransaction.model.TransactionActProCreCarPerCli;
 import com.nttdata.bc19.mstransaction.request.TransactionActProCreCarBusCliRequest;
 import com.nttdata.bc19.mstransaction.service.ITransactionActProCreCarBusCliService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,11 @@ public class TrasactionActProCreCarBusCliApi {
 
     @GetMapping("/{id}")
     public Mono<TransactionActProCreCarBusCli> findById(@PathVariable String id){ return transactionActProCreCarBusCliService.findById(id); }
+
+    @GetMapping("/find/{idActProCreCarBusCli}")
+    public Flux<TransactionActProCreCarBusCli> findByIdActProCreCarBusCli(@PathVariable String idActProCreCarBusCli){
+        return transactionActProCreCarBusCliService.findByIdActProCreCarBusCli(idActProCreCarBusCli);
+    }
 
     @DeleteMapping("/{id}")
     public Mono<Void> delete(@PathVariable String id){
