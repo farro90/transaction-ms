@@ -4,6 +4,7 @@ import com.nttdata.bc19.mstransaction.model.TransactionActProCrePerCli;
 import com.nttdata.bc19.mstransaction.repository.ITransactionActProCrePerCliRepository;
 import com.nttdata.bc19.mstransaction.request.TransactionActProCrePerCliRequest;
 import com.nttdata.bc19.mstransaction.service.ITransactionActProCrePerCliService;
+import com.nttdata.bc19.mstransaction.util.TransactionTypeActPro;
 import com.nttdata.bc19.mstransaction.webclient.impl.ServiceWCImpl;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +27,27 @@ public class TransactionActProCrePerCliServiceImpl implements ITransactionActPro
     public Mono<TransactionActProCrePerCli> create(TransactionActProCrePerCliRequest transactionActProCrePerCliRequest) {
         return clientServiceWC.findActProCrePerCliById(transactionActProCrePerCliRequest.getIdActProCrePerCli())
                 .switchIfEmpty(Mono.error(new Exception()))
-                .flatMap(ActProCrePerCliResponse -> {
+                .flatMap(actProCrePerCliResponse -> {
                     TransactionActProCrePerCli transactionActProCrePerCli = new TransactionActProCrePerCli();
                     transactionActProCrePerCli.setId(new ObjectId().toString());
                     transactionActProCrePerCli.setIdActProCrePerCli(transactionActProCrePerCliRequest.getIdActProCrePerCli());
                     transactionActProCrePerCli.setTransactionTypeActPro(transactionActProCrePerCliRequest.getTransactionTypeActPro());
                     transactionActProCrePerCli.setTransactionDate(LocalDateTime.now());
                     transactionActProCrePerCli.setCreatedAt(LocalDateTime.now());
-                    transactionActProCrePerCli.setActProCrePerCli(ActProCrePerCliResponse);
+                    transactionActProCrePerCli.setAmount(transactionActProCrePerCliRequest.getAmount());
+                    //transactionActProCrePerCli.setActProCrePerCli(actProCrePerCliResponse);
+                    //return transactionActProCrePerCliRepository.save(transactionActProCrePerCli);
 
-                    return transactionActProCrePerCliRepository.save(transactionActProCrePerCli);
+                    if(transactionActProCrePerCli.getTransactionTypeActPro().equals(TransactionTypeActPro.PAGO.name())) {
+                        actProCrePerCliResponse.setAmountPaid(actProCrePerCliResponse.getAmountPaid() + transactionActProCrePerCliRequest.getAmount());
+                        return clientServiceWC.updateActProCrePerCli(actProCrePerCliResponse)
+                                .switchIfEmpty(Mono.error(new Exception()))
+                                .flatMap(actProCrePerCliResponseUpdate -> {
+                                    transactionActProCrePerCli.setActProCrePerCli(actProCrePerCliResponseUpdate);
+                                    return transactionActProCrePerCliRepository.save(transactionActProCrePerCli);
+                                });
+                    }
+                    return null;
                 });
     }
 

@@ -28,26 +28,38 @@ public class TransactionPasProPerCliServiceImpl implements ITransactionPasProPer
 
         return clientServiceWC.findPasProPerCliById(transactionPasProPerCliRequest.getIdPasProPerCli())
                 .switchIfEmpty(Mono.error(new Exception()))
-                .flatMap(PasProPerCliResponse -> {
+                .flatMap(pasProPerCliResponse -> {
                     TransactionPasProPerCli transactionPasProPerCli = new TransactionPasProPerCli();
                     transactionPasProPerCli.setId(new ObjectId().toString());
                     transactionPasProPerCli.setIdPasProPerCli(transactionPasProPerCliRequest.getIdPasProPerCli());
                     transactionPasProPerCli.setTransactionTypePasPro(transactionPasProPerCliRequest.getTransactionTypePasPro());
                     transactionPasProPerCli.setTransactionDate(LocalDateTime.now());
                     transactionPasProPerCli.setCreatedAt(LocalDateTime.now());
-                    transactionPasProPerCli.setPasProPerCli(PasProPerCliResponse);
+                    //transactionPasProPerCli.setPasProPerCli(pasProPerCliResponse);
 
                     if(transactionPasProPerCliRequest.getTransactionTypePasPro().equals(TransactionTypePasPro.RETIRO.name())){
-                        if(PasProPerCliResponse.getAmount() >= transactionPasProPerCliRequest.getAmount()){
-                            PasProPerCliResponse.setAmount(PasProPerCliResponse.getAmount() - transactionPasProPerCliRequest.getAmount());
-                            clientServiceWC.updatePasProPerCli(PasProPerCliResponse);
-                            return transactionPasProPerCliRepository.save(transactionPasProPerCli);
+                        if(pasProPerCliResponse.getAmount() >= transactionPasProPerCliRequest.getAmount()){
+                            pasProPerCliResponse.setAmount(pasProPerCliResponse.getAmount() - transactionPasProPerCliRequest.getAmount());
+                            //clientServiceWC.updatePasProPerCli(pasProPerCliResponse);
+                            //return transactionPasProPerCliRepository.save(transactionPasProPerCli);
+                            return clientServiceWC.updatePasProPerCli(pasProPerCliResponse)
+                                    .switchIfEmpty(Mono.error(new Exception()))
+                                    .flatMap(pasProPerCliResponseUpdate -> {
+                                        transactionPasProPerCli.setPasProPerCli(pasProPerCliResponseUpdate);
+                                        return transactionPasProPerCliRepository.save(transactionPasProPerCli);
+                                    });
                         }
                     }
                     else if(transactionPasProPerCliRequest.getTransactionTypePasPro().equals(TransactionTypePasPro.DEPOSITO.name())){
-                        PasProPerCliResponse.setAmount(PasProPerCliResponse.getAmount() + transactionPasProPerCliRequest.getAmount());
-                        clientServiceWC.updatePasProPerCli(PasProPerCliResponse);
-                        return transactionPasProPerCliRepository.save(transactionPasProPerCli);
+                        pasProPerCliResponse.setAmount(pasProPerCliResponse.getAmount() + transactionPasProPerCliRequest.getAmount());
+                        //clientServiceWC.updatePasProPerCli(pasProPerCliResponse);
+                        //return transactionPasProPerCliRepository.save(transactionPasProPerCli);
+                        return clientServiceWC.updatePasProPerCli(pasProPerCliResponse)
+                                .switchIfEmpty(Mono.error(new Exception()))
+                                .flatMap(pasProPerCliResponseUpdate -> {
+                                    transactionPasProPerCli.setPasProPerCli(pasProPerCliResponseUpdate);
+                                    return transactionPasProPerCliRepository.save(transactionPasProPerCli);
+                                });
                     }
 
                     return null;

@@ -27,26 +27,38 @@ public class TransactionPasProBusCliServiceImpl implements ITransactionPasProBus
     public Mono<TransactionPasProBusCli> create(TransactionPasProBusCliRequest transactionPasProBusCliRequest) {
         return clientServiceWC.findPasProBusCliById(transactionPasProBusCliRequest.getIdPasProBusCli())
                 .switchIfEmpty(Mono.error(new Exception()))
-                .flatMap(PasProBusCliResponse -> {
+                .flatMap(pasProBusCliResponse -> {
                     TransactionPasProBusCli transactionPasProBusCli = new TransactionPasProBusCli();
                     transactionPasProBusCli.setId(new ObjectId().toString());
                     transactionPasProBusCli.setIdPasProBusCli(transactionPasProBusCliRequest.getIdPasProBusCli());
                     transactionPasProBusCli.setTransactionTypePasPro(transactionPasProBusCliRequest.getTransactionTypePasPro());
                     transactionPasProBusCli.setTransactionDate(LocalDateTime.now());
                     transactionPasProBusCli.setCreatedAt(LocalDateTime.now());
-                    transactionPasProBusCli.setPasProBusCli(PasProBusCliResponse);
+                    //transactionPasProBusCli.setPasProBusCli(pasProBusCliResponse);
 
                     if(transactionPasProBusCliRequest.getTransactionTypePasPro().equals(TransactionTypePasPro.RETIRO.name())){
-                        if(PasProBusCliResponse.getAmount() >= transactionPasProBusCliRequest.getAmount()){
-                            PasProBusCliResponse.setAmount(PasProBusCliResponse.getAmount() - transactionPasProBusCliRequest.getAmount());
-                            clientServiceWC.updatePasProBusCli(PasProBusCliResponse);
-                            return transactionPasProBusCliRepository.save(transactionPasProBusCli);
+                        if(pasProBusCliResponse.getAmount() >= transactionPasProBusCliRequest.getAmount()){
+                            pasProBusCliResponse.setAmount(pasProBusCliResponse.getAmount() - transactionPasProBusCliRequest.getAmount());
+                            //clientServiceWC.updatePasProBusCli(PasProBusCliResponse);
+                            //return transactionPasProBusCliRepository.save(transactionPasProBusCli);
+                            return clientServiceWC.updatePasProBusCli(pasProBusCliResponse)
+                                    .switchIfEmpty(Mono.error(new Exception()))
+                                    .flatMap(pasProBusCliResponseUpdate -> {
+                                        transactionPasProBusCli.setPasProBusCli(pasProBusCliResponseUpdate);
+                                        return transactionPasProBusCliRepository.save(transactionPasProBusCli);
+                                    });
                         }
                     }
                     else if(transactionPasProBusCliRequest.getTransactionTypePasPro().equals(TransactionTypePasPro.DEPOSITO.name())){
-                        PasProBusCliResponse.setAmount(PasProBusCliResponse.getAmount() + transactionPasProBusCliRequest.getAmount());
-                        clientServiceWC.updatePasProBusCli(PasProBusCliResponse);
-                        return transactionPasProBusCliRepository.save(transactionPasProBusCli);
+                        pasProBusCliResponse.setAmount(pasProBusCliResponse.getAmount() + transactionPasProBusCliRequest.getAmount());
+                        //clientServiceWC.updatePasProBusCli(pasProBusCliResponse);
+                        //return transactionPasProBusCliRepository.save(transactionPasProBusCli);
+                        return clientServiceWC.updatePasProBusCli(pasProBusCliResponse)
+                                .switchIfEmpty(Mono.error(new Exception()))
+                                .flatMap(pasProBusCliResponseUpdate -> {
+                                    transactionPasProBusCli.setPasProBusCli(pasProBusCliResponseUpdate);
+                                    return transactionPasProBusCliRepository.save(transactionPasProBusCli);
+                                });
                     }
 
                     return null;

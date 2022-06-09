@@ -15,6 +15,6 @@ public interface IServiceWC {
     Mono<PasProBusCli> updatePasProBusCli(PasProBusCli pasProBusCli);
     Mono<ActProCrePerCli> updateActProCrePerCli(ActProCrePerCli actProCrePerCli);
     Mono<ActProCreBusCli> updateActProCreBusCli(ActProCreBusCli actProCreBusCli);
-    Mono<ActProCreCarPerCli> updateActProCreCarPerCli(ActProCrePerCli actProCrePerCli);
+    Mono<ActProCreCarPerCli> updateActProCreCarPerCli(ActProCreCarPerCli actProCreCarPerCli);
     Mono<ActProCreCarBusCli> updateActProCreCarBusCli(ActProCreCarBusCli actProCreCarBusCli);
 }

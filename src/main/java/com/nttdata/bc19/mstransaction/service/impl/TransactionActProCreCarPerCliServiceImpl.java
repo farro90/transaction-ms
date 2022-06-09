@@ -5,6 +5,7 @@ import com.nttdata.bc19.mstransaction.model.TransactionActProCreCarPerCli;
 import com.nttdata.bc19.mstransaction.repository.ITransactionActProCreCarPerCliRepository;
 import com.nttdata.bc19.mstransaction.request.TransactionActProCreCarPerCliRequest;
 import com.nttdata.bc19.mstransaction.service.ITransactionActProCreCarPerCliService;
+import com.nttdata.bc19.mstransaction.util.TransactionTypeActPro;
 import com.nttdata.bc19.mstransaction.webclient.impl.ServiceWCImpl;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +28,36 @@ public class TransactionActProCreCarPerCliServiceImpl implements ITransactionAct
     public Mono<TransactionActProCreCarPerCli> create(TransactionActProCreCarPerCliRequest transactionActProCreCarPerCliRequest) {
         return clientServiceWC.findActProCreCarPerCliById(transactionActProCreCarPerCliRequest.getIdActProCreCarPerCli())
                 .switchIfEmpty(Mono.error(new Exception()))
-                .flatMap(ActProCreCarPerCliResponse -> {
+                .flatMap(actProCreCarPerCliResponse -> {
                     TransactionActProCreCarPerCli transactionActProCreCarPerCli = new TransactionActProCreCarPerCli();
                     transactionActProCreCarPerCli.setId(new ObjectId().toString());
                     transactionActProCreCarPerCli.setIdActProCreCarPerCli(transactionActProCreCarPerCliRequest.getIdActProCreCarPerCli());
                     transactionActProCreCarPerCli.setTransactionTypeActPro(transactionActProCreCarPerCliRequest.getTransactionTypeActPro());
                     transactionActProCreCarPerCli.setTransactionDate(LocalDateTime.now());
                     transactionActProCreCarPerCli.setCreatedAt(LocalDateTime.now());
-                    transactionActProCreCarPerCli.setActProCreCarPerCli(ActProCreCarPerCliResponse);
+                    transactionActProCreCarPerCli.setAmount(transactionActProCreCarPerCliRequest.getAmount());
+                    //transactionActProCreCarPerCli.setActProCreCarPerCli(ActProCreCarPerCliResponse);
+                    //return transactionActProCreCarPerCliRepository.save(transactionActProCreCarPerCli);
 
-                    return transactionActProCreCarPerCliRepository.save(transactionActProCreCarPerCli);
+                    if(transactionActProCreCarPerCli.getTransactionTypeActPro().equals(TransactionTypeActPro.PAGO.name())) {
+                        actProCreCarPerCliResponse.setAmountConsumed(actProCreCarPerCliResponse.getAmountConsumed() - transactionActProCreCarPerCliRequest.getAmount());
+                        return clientServiceWC.updateActProCreCarPerCli(actProCreCarPerCliResponse)
+                                .switchIfEmpty(Mono.error(new Exception()))
+                                .flatMap(actProCreCarPerCliResponseUpdate -> {
+                                    transactionActProCreCarPerCli.setActProCreCarPerCli(actProCreCarPerCliResponseUpdate);
+                                    return transactionActProCreCarPerCliRepository.save(transactionActProCreCarPerCli);
+                                });
+                    }
+                    else if(transactionActProCreCarPerCli.getTransactionTypeActPro().equals(TransactionTypeActPro.CONSUMO.name())){
+                        actProCreCarPerCliResponse.setAmountConsumed(actProCreCarPerCliResponse.getAmountConsumed() + transactionActProCreCarPerCliRequest.getAmount());
+                        return clientServiceWC.updateActProCreCarPerCli(actProCreCarPerCliResponse)
+                                .switchIfEmpty(Mono.error(new Exception()))
+                                .flatMap(actProCreCarPerCliResponseUpdate -> {
+                                    transactionActProCreCarPerCli.setActProCreCarPerCli(actProCreCarPerCliResponseUpdate);
+                                    return transactionActProCreCarPerCliRepository.save(transactionActProCreCarPerCli);
+                                });
+                    }
+                    return null;
                 });
     }
 

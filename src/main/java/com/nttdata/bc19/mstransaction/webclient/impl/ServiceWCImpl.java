@@ -106,7 +106,7 @@ public class ServiceWCImpl implements IServiceWC {
     @Override
     public Mono<PasProPerCli> updatePasProPerCli(PasProPerCli pasProPerCli) {
         return webClient.baseUrl(URL_API_MANAGEMENT).build().put().uri("/api/pasive/person/")
-                .bodyValue(pasProPerCli)
+                .body(Mono.just(pasProPerCli), PasProPerCli.class)
                 .retrieve()
                 .bodyToMono(PasProPerCli.class)
                 .onErrorResume(error -> {
@@ -121,7 +121,7 @@ public class ServiceWCImpl implements IServiceWC {
     @Override
     public Mono<PasProBusCli> updatePasProBusCli(PasProBusCli pasProBusCli) {
         return webClient.baseUrl(URL_API_MANAGEMENT).build().put().uri("/api/pasive/business/")
-                .bodyValue(pasProBusCli)
+                .body(Mono.just(pasProBusCli), PasProBusCli.class)
                 .retrieve()
                 .bodyToMono(PasProBusCli.class)
                 .onErrorResume(error -> {
@@ -136,7 +136,7 @@ public class ServiceWCImpl implements IServiceWC {
     @Override
     public Mono<ActProCrePerCli> updateActProCrePerCli(ActProCrePerCli actProCrePerCli) {
         return webClient.baseUrl(URL_API_MANAGEMENT).build().put().uri("/api/active/credit/person/")
-                .bodyValue(actProCrePerCli)
+                .body(Mono.just(actProCrePerCli), ActProCrePerCli.class)
                 .retrieve()
                 .bodyToMono(ActProCrePerCli.class)
                 .onErrorResume(error -> {
@@ -151,7 +151,7 @@ public class ServiceWCImpl implements IServiceWC {
     @Override
     public Mono<ActProCreBusCli> updateActProCreBusCli(ActProCreBusCli actProCreBusCli) {
         return webClient.baseUrl(URL_API_MANAGEMENT).build().put().uri("/api/active/credit/business/")
-                .bodyValue(actProCreBusCli)
+                .body(Mono.just(actProCreBusCli), ActProCreBusCli.class)
                 .retrieve()
                 .bodyToMono(ActProCreBusCli.class)
                 .onErrorResume(error -> {
@@ -164,9 +164,9 @@ public class ServiceWCImpl implements IServiceWC {
     }
 
     @Override
-    public Mono<ActProCreCarPerCli> updateActProCreCarPerCli(ActProCrePerCli actProCreCarPerCli) {
+    public Mono<ActProCreCarPerCli> updateActProCreCarPerCli(ActProCreCarPerCli actProCreCarPerCli) {
         return webClient.baseUrl(URL_API_MANAGEMENT).build().put().uri("/api/active/credit-card/person/")
-                .bodyValue(actProCreCarPerCli)
+                .body(Mono.just(actProCreCarPerCli), ActProCrePerCli.class)
                 .retrieve()
                 .bodyToMono(ActProCreCarPerCli.class)
                 .onErrorResume(error -> {
@@ -181,7 +181,7 @@ public class ServiceWCImpl implements IServiceWC {
     @Override
     public Mono<ActProCreCarBusCli> updateActProCreCarBusCli(ActProCreCarBusCli actProCreCarBusCli) {
         return webClient.baseUrl(URL_API_MANAGEMENT).build().put().uri("/api/active/credit-card/business/")
-                .bodyValue(actProCreCarBusCli)
+                .body(Mono.just(actProCreCarBusCli), ActProCreCarBusCli.class)
                 .retrieve()
                 .bodyToMono(ActProCreCarBusCli.class)
                 .onErrorResume(error -> {
